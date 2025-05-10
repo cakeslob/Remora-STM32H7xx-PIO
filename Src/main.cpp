@@ -113,6 +113,23 @@ void SystemClock_Config(void)
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
   */
+ #if defined(NUCLEO_H743) // Nucleo H743 dev board with 8MHz clock source
+
+ RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
+ RCC_OscInitStruct.HSEState = RCC_HSE_ON;
+ RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+ RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
+ RCC_OscInitStruct.PLL.PLLM = 2;
+ RCC_OscInitStruct.PLL.PLLN = 240;
+ RCC_OscInitStruct.PLL.PLLP = 2;
+ RCC_OscInitStruct.PLL.PLLQ = 20;
+ RCC_OscInitStruct.PLL.PLLR = 2;
+ RCC_OscInitStruct.PLL.PLLRGE = RCC_PLL1VCIRANGE_2;
+ RCC_OscInitStruct.PLL.PLLVCOSEL = RCC_PLL1VCOWIDE;
+ RCC_OscInitStruct.PLL.PLLFRACN = 0;
+
+#else // Common configuration for all other H743 boards with 25MHz crystals
+
   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
   RCC_OscInitStruct.HSEState = RCC_HSE_ON;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
@@ -125,11 +142,13 @@ void SystemClock_Config(void)
   RCC_OscInitStruct.PLL.PLLRGE = RCC_PLL1VCIRANGE_2;
   RCC_OscInitStruct.PLL.PLLVCOSEL = RCC_PLL1VCOWIDE;
   RCC_OscInitStruct.PLL.PLLFRACN = 0;
+#endif
+
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
   {
     Error_Handler();
   }
-
+  
   /** Initializes the CPU, AHB and APB buses clocks
   */
   RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
@@ -159,6 +178,22 @@ void PeriphCommonClock_Config(void)
 
   /** Initializes the peripherals clock
   */
+ #if defined(NUCLEO_H743) // Nucleo H743 dev board with 8MHz clock source
+
+ PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_SDMMC|RCC_PERIPHCLK_SPI1;
+ PeriphClkInitStruct.PLL2.PLL2M = 2;
+ PeriphClkInitStruct.PLL2.PLL2N = 240;
+ PeriphClkInitStruct.PLL2.PLL2P = 2;
+ PeriphClkInitStruct.PLL2.PLL2Q = 20;
+ PeriphClkInitStruct.PLL2.PLL2R = 80;
+ PeriphClkInitStruct.PLL2.PLL2RGE = RCC_PLL1VCIRANGE_2;
+ PeriphClkInitStruct.PLL2.PLL2VCOSEL = RCC_PLL1VCOWIDE;
+ PeriphClkInitStruct.PLL2.PLL2FRACN = 0;
+ PeriphClkInitStruct.SdmmcClockSelection = RCC_SDMMCCLKSOURCE_PLL2;
+ PeriphClkInitStruct.Spi123ClockSelection = RCC_SPI123CLKSOURCE_PLL2;
+
+#else // Common configuration for all other H743 boards with 25MHz crystals
+
   PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_SDMMC|RCC_PERIPHCLK_SPI1;
   PeriphClkInitStruct.PLL2.PLL2M = 2;
   PeriphClkInitStruct.PLL2.PLL2N = 12;
@@ -170,6 +205,8 @@ void PeriphCommonClock_Config(void)
   PeriphClkInitStruct.PLL2.PLL2FRACN = 0;
   PeriphClkInitStruct.SdmmcClockSelection = RCC_SDMMCCLKSOURCE_PLL2;
   PeriphClkInitStruct.Spi123ClockSelection = RCC_SPI123CLKSOURCE_PLL2;
+#endif
+
   if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)
   {
     Error_Handler();
