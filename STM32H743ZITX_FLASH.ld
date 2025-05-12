@@ -54,7 +54,6 @@ MEMORY
   ITCMRAM (xrw)     : ORIGIN = 0x00000000, LENGTH = 64K
 }
 
-
 /* Define output sections */
 SECTIONS
 {
