@@ -62,7 +62,7 @@ int main(void)
 	MX_SDMMC1_SD_Init();
 	MX_FATFS_Init();
 
-  auto comms = std::make_unique<STM32H7_SPIComms>(&rxData, &txData, SPI1);
+  auto comms = std::make_unique<STM32H7_SPIComms>(&rxData, &txData, SPI2);
 	auto commsHandler = std::make_shared<CommsHandler>();
 	commsHandler->setInterface(std::move(comms));
 
@@ -86,12 +86,12 @@ int main(void)
   */
 void SystemClock_Config(void)
 {
-      // Clock configuration
-    // from grblhal
-    // - 480MHZ system clock
+  // Clock configuration
+  // from grblhal
+  // - 480MHZ system clock
 
-    // WeAct MiniSTM32H7xx & BTT SKR3 using 25MHz crystal
-    // Nucleo dev board using 8MHz clock source (STLink MCO)
+  // WeAct MiniSTM32H7xx & BTT SKR3 using 25MHz crystal
+  // Nucleo dev board using 8MHz clock source (STLink MCO)
   RCC_OscInitTypeDef RCC_OscInitStruct = {0};
   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
   RCC_PeriphCLKInitTypeDef PeriphClkInitStruct = {0};
@@ -117,119 +117,106 @@ void SystemClock_Config(void)
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
   */
-#if defined(STM32H743xx)
+  #if defined(STM32H743xx)
+    #if defined(NUCLEO_H743) // Nucleo H743 dev board with 8MHz clock source
+      RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
+      RCC_OscInitStruct.HSEState = RCC_HSE_ON;
+      RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+      RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
+      RCC_OscInitStruct.PLL.PLLM = 2;
+      RCC_OscInitStruct.PLL.PLLN = 240;
+      RCC_OscInitStruct.PLL.PLLP = 2;
+      RCC_OscInitStruct.PLL.PLLQ = 20;
+      RCC_OscInitStruct.PLL.PLLR = 2;
+      RCC_OscInitStruct.PLL.PLLRGE = RCC_PLL1VCIRANGE_2;
+      RCC_OscInitStruct.PLL.PLLVCOSEL = RCC_PLL1VCOWIDE;
+      RCC_OscInitStruct.PLL.PLLFRACN = 0;
 
-#if defined(NUCLEO_H743) // Nucleo H743 dev board with 8MHz clock source
+      PeriphClkInitStruct.PLL2.PLL2M = 2;
+      PeriphClkInitStruct.PLL2.PLL2N = 240;
+      PeriphClkInitStruct.PLL2.PLL2P = 2;
+      PeriphClkInitStruct.PLL2.PLL2Q = 20;
+      PeriphClkInitStruct.PLL2.PLL2R = 80;
+      PeriphClkInitStruct.PLL2.PLL2RGE = RCC_PLL1VCIRANGE_2;
+      PeriphClkInitStruct.PLL2.PLL2VCOSEL = RCC_PLL1VCOWIDE;
+      PeriphClkInitStruct.PLL2.PLL2FRACN = 0;
 
-    RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
-    RCC_OscInitStruct.HSEState = RCC_HSE_ON;
-    RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
-    RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
-    RCC_OscInitStruct.PLL.PLLM = 2;
-    RCC_OscInitStruct.PLL.PLLN = 240;
-    RCC_OscInitStruct.PLL.PLLP = 2;
-    RCC_OscInitStruct.PLL.PLLQ = 20;
-    RCC_OscInitStruct.PLL.PLLR = 2;
-    RCC_OscInitStruct.PLL.PLLRGE = RCC_PLL1VCIRANGE_2;
-    RCC_OscInitStruct.PLL.PLLVCOSEL = RCC_PLL1VCOWIDE;
-    RCC_OscInitStruct.PLL.PLLFRACN = 0;
+      #define FLASH_LATENCY FLASH_LATENCY_4
+    #else // Common configuration for all other H743 boards with 25MHz crystals
+      RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
+      RCC_OscInitStruct.HSEState = RCC_HSE_ON;
+      RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+      RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
+      RCC_OscInitStruct.PLL.PLLM = 5;
+      RCC_OscInitStruct.PLL.PLLN = 192;
+      RCC_OscInitStruct.PLL.PLLP = 2;
+      RCC_OscInitStruct.PLL.PLLQ = 4;
+      RCC_OscInitStruct.PLL.PLLR = 2;
+      RCC_OscInitStruct.PLL.PLLRGE = RCC_PLL1VCIRANGE_2;
+      RCC_OscInitStruct.PLL.PLLVCOSEL = RCC_PLL1VCOWIDE;
+      RCC_OscInitStruct.PLL.PLLFRACN = 0;
 
-    PeriphClkInitStruct.PLL2.PLL2M = 2;
-    PeriphClkInitStruct.PLL2.PLL2N = 240;
-    PeriphClkInitStruct.PLL2.PLL2P = 2;
-    PeriphClkInitStruct.PLL2.PLL2Q = 20;
-    PeriphClkInitStruct.PLL2.PLL2R = 80;
-    PeriphClkInitStruct.PLL2.PLL2RGE = RCC_PLL1VCIRANGE_2;
-    PeriphClkInitStruct.PLL2.PLL2VCOSEL = RCC_PLL1VCOWIDE;
-    PeriphClkInitStruct.PLL2.PLL2FRACN = 0;
+      PeriphClkInitStruct.PLL2.PLL2M = 2;
+      PeriphClkInitStruct.PLL2.PLL2N = 12;
+      PeriphClkInitStruct.PLL2.PLL2P = 1;
+      PeriphClkInitStruct.PLL2.PLL2Q = 10;
+      PeriphClkInitStruct.PLL2.PLL2R = 2;
+      PeriphClkInitStruct.PLL2.PLL2RGE = RCC_PLL2VCIRANGE_3;
+      PeriphClkInitStruct.PLL2.PLL2VCOSEL = RCC_PLL2VCOMEDIUM;
+      PeriphClkInitStruct.PLL2.PLL2FRACN = 0;
 
-    #define FLASH_LATENCY FLASH_LATENCY_4
+      #define FLASH_LATENCY FLASH_LATENCY_4
+    #endif // H743 other boards
+  #elif defined (STM32H723xx)
+    #if defined(NUCLEO_H723) //  // Nucleo H723 dev board with 8MHz clock source
+      RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
+      RCC_OscInitStruct.HSEState = RCC_HSE_ON;
+      RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+      RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
+      RCC_OscInitStruct.PLL.PLLM = 2;
+      RCC_OscInitStruct.PLL.PLLN = 120;
+      RCC_OscInitStruct.PLL.PLLP = 1;
+      RCC_OscInitStruct.PLL.PLLQ = 10;
+      RCC_OscInitStruct.PLL.PLLR = 1;
+      RCC_OscInitStruct.PLL.PLLRGE = RCC_PLL1VCIRANGE_2;
+      RCC_OscInitStruct.PLL.PLLVCOSEL = RCC_PLL1VCOWIDE;
+      RCC_OscInitStruct.PLL.PLLFRACN = 0;
 
-#else // Common configuration for all other H743 boards with 25MHz crystals
+      PeriphClkInitStruct.PLL2.PLL2M = 2;
+      PeriphClkInitStruct.PLL2.PLL2N = 120;
+      PeriphClkInitStruct.PLL2.PLL2P = 1;
+      PeriphClkInitStruct.PLL2.PLL2Q = 10;
+      PeriphClkInitStruct.PLL2.PLL2R = 40;
+      PeriphClkInitStruct.PLL2.PLL2RGE = RCC_PLL1VCIRANGE_2;
+      PeriphClkInitStruct.PLL2.PLL2VCOSEL = RCC_PLL1VCOWIDE;
+      PeriphClkInitStruct.PLL2.PLL2FRACN = 0;
+      #define FLASH_LATENCY FLASH_LATENCY_3
+    #else  // Common configuration for all other H723 boards with 25MHz crystals
+      RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
+      RCC_OscInitStruct.HSEState = RCC_HSE_ON;
+      RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+      RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
+      RCC_OscInitStruct.PLL.PLLM = 5;
+      RCC_OscInitStruct.PLL.PLLN = 96;
+      RCC_OscInitStruct.PLL.PLLP = 1;
+      RCC_OscInitStruct.PLL.PLLQ = 10;
+      RCC_OscInitStruct.PLL.PLLR = 2;
+      RCC_OscInitStruct.PLL.PLLRGE = RCC_PLL1VCIRANGE_2;
+      RCC_OscInitStruct.PLL.PLLVCOSEL = RCC_PLL1VCOWIDE;
+      RCC_OscInitStruct.PLL.PLLFRACN = 0;
 
+      PeriphClkInitStruct.PLL2.PLL2M = 5;
+      PeriphClkInitStruct.PLL2.PLL2N = 96;
+      PeriphClkInitStruct.PLL2.PLL2P = 1;
+      PeriphClkInitStruct.PLL2.PLL2Q = 10;
+      PeriphClkInitStruct.PLL2.PLL2R = 40;
+      PeriphClkInitStruct.PLL2.PLL2RGE = RCC_PLL1VCIRANGE_2;
+      PeriphClkInitStruct.PLL2.PLL2VCOSEL = RCC_PLL1VCOWIDE;
+      PeriphClkInitStruct.PLL2.PLL2FRACN = 0;
 
-    RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
-    RCC_OscInitStruct.HSEState = RCC_HSE_ON;
-    RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
-    RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
-    RCC_OscInitStruct.PLL.PLLM = 5;
-    RCC_OscInitStruct.PLL.PLLN = 192;
-    RCC_OscInitStruct.PLL.PLLP = 2;
-    RCC_OscInitStruct.PLL.PLLQ = 4;
-    RCC_OscInitStruct.PLL.PLLR = 2;
-    RCC_OscInitStruct.PLL.PLLRGE = RCC_PLL1VCIRANGE_2;
-    RCC_OscInitStruct.PLL.PLLVCOSEL = RCC_PLL1VCOWIDE;
-    RCC_OscInitStruct.PLL.PLLFRACN = 0;
-
-    PeriphClkInitStruct.PLL2.PLL2M = 2;
-    PeriphClkInitStruct.PLL2.PLL2N = 12;
-    PeriphClkInitStruct.PLL2.PLL2P = 1;
-    PeriphClkInitStruct.PLL2.PLL2Q = 10;
-    PeriphClkInitStruct.PLL2.PLL2R = 2;
-    PeriphClkInitStruct.PLL2.PLL2RGE = RCC_PLL2VCIRANGE_3;
-    PeriphClkInitStruct.PLL2.PLL2VCOSEL = RCC_PLL2VCOMEDIUM;
-    PeriphClkInitStruct.PLL2.PLL2FRACN = 0;
-
-    #define FLASH_LATENCY FLASH_LATENCY_4
-
-#endif // H743 other boards
-
-#elif defined (STM32H723xx)
-
-#if defined(NUCLEO_H723) //  // Nucleo H723 dev board with 8MHz clock source
-
-    RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
-    RCC_OscInitStruct.HSEState = RCC_HSE_ON;
-    RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
-    RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
-    RCC_OscInitStruct.PLL.PLLM = 2;
-    RCC_OscInitStruct.PLL.PLLN = 120;
-    RCC_OscInitStruct.PLL.PLLP = 1;
-    RCC_OscInitStruct.PLL.PLLQ = 10;
-    RCC_OscInitStruct.PLL.PLLR = 1;
-    RCC_OscInitStruct.PLL.PLLRGE = RCC_PLL1VCIRANGE_2;
-    RCC_OscInitStruct.PLL.PLLVCOSEL = RCC_PLL1VCOWIDE;
-    RCC_OscInitStruct.PLL.PLLFRACN = 0;
-
-    PeriphClkInitStruct.PLL2.PLL2M = 2;
-    PeriphClkInitStruct.PLL2.PLL2N = 120;
-    PeriphClkInitStruct.PLL2.PLL2P = 1;
-    PeriphClkInitStruct.PLL2.PLL2Q = 10;
-    PeriphClkInitStruct.PLL2.PLL2R = 40;
-    PeriphClkInitStruct.PLL2.PLL2RGE = RCC_PLL1VCIRANGE_2;
-    PeriphClkInitStruct.PLL2.PLL2VCOSEL = RCC_PLL1VCOWIDE;
-    PeriphClkInitStruct.PLL2.PLL2FRACN = 0;
-
-  #define FLASH_LATENCY FLASH_LATENCY_3
-
-#else  // Common configuration for all other H723 boards with 25MHz crystals
-
-    RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
-    RCC_OscInitStruct.HSEState = RCC_HSE_ON;
-    RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
-    RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
-    RCC_OscInitStruct.PLL.PLLM = 5;
-    RCC_OscInitStruct.PLL.PLLN = 96;
-    RCC_OscInitStruct.PLL.PLLP = 1;
-    RCC_OscInitStruct.PLL.PLLQ = 10;
-    RCC_OscInitStruct.PLL.PLLR = 2;
-    RCC_OscInitStruct.PLL.PLLRGE = RCC_PLL1VCIRANGE_2;
-    RCC_OscInitStruct.PLL.PLLVCOSEL = RCC_PLL1VCOWIDE;
-    RCC_OscInitStruct.PLL.PLLFRACN = 0;
-
-    PeriphClkInitStruct.PLL2.PLL2M = 5;
-    PeriphClkInitStruct.PLL2.PLL2N = 96;
-    PeriphClkInitStruct.PLL2.PLL2P = 1;
-    PeriphClkInitStruct.PLL2.PLL2Q = 10;
-    PeriphClkInitStruct.PLL2.PLL2R = 40;
-    PeriphClkInitStruct.PLL2.PLL2RGE = RCC_PLL1VCIRANGE_2;
-    PeriphClkInitStruct.PLL2.PLL2VCOSEL = RCC_PLL1VCOWIDE;
-    PeriphClkInitStruct.PLL2.PLL2FRACN = 0;
-
-#define FLASH_LATENCY FLASH_LATENCY_3
-
-#endif // STM32H723xx other boards
-#endif // STM32H723xx
+      #define FLASH_LATENCY FLASH_LATENCY_3
+    #endif // STM32H723xx other boards
+  #endif // STM32H723xx
 
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
   {
@@ -254,7 +241,7 @@ void SystemClock_Config(void)
     Error_Handler();
   }
 
-  PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_SDMMC|RCC_PERIPHCLK_SPI1;
+  PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_SDMMC|RCC_PERIPHCLK_SPI2;
   PeriphClkInitStruct.Spi123ClockSelection = RCC_SPI123CLKSOURCE_PLL2;
   PeriphClkInitStruct.SdmmcClockSelection = RCC_SDMMCCLKSOURCE_PLL2;
   
@@ -310,7 +297,7 @@ static void MX_USART1_UART_Init(void)
   /* USER CODE BEGIN USART1_Init 1 */
 
   /* USER CODE END USART1_Init 1 */
-  huart1.Instance = USART1;
+  huart1.Instance = USART3;
   huart1.Init.BaudRate = Config::pcBaud;
   huart1.Init.WordLength = UART_WORDLENGTH_8B;
   huart1.Init.StopBits = UART_STOPBITS_1;
