@@ -118,8 +118,7 @@ void SystemClock_Config(void)
   * in the RCC_OscInitTypeDef structure.
   */
 #if defined(STM32H743xx)
-
-#if defined(NUCLEO_H743) // Nucleo H743 dev board with 8MHz clock source
+  #if defined(NUCLEO_H743) // Nucleo H743 dev board with 8MHz clock source
 
     RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
     RCC_OscInitStruct.HSEState = RCC_HSE_ON;
@@ -145,8 +144,7 @@ void SystemClock_Config(void)
 
     #define FLASH_LATENCY FLASH_LATENCY_4
 
-#else // Common configuration for all other H743 boards with 25MHz crystals
-
+  #else // Common configuration for all other H743 boards with 25MHz crystals
 
     RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
     RCC_OscInitStruct.HSEState = RCC_HSE_ON;
@@ -172,11 +170,10 @@ void SystemClock_Config(void)
 
     #define FLASH_LATENCY FLASH_LATENCY_4
 
-#endif // H743 other boards
+  #endif // H743 other boards
 
 #elif defined (STM32H723xx)
-
-#if defined(NUCLEO_H723) //  // Nucleo H723 dev board with 8MHz clock source
+  #if defined(NUCLEO_H723) //  // Nucleo H723 dev board with 8MHz clock source
 
     RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
     RCC_OscInitStruct.HSEState = RCC_HSE_ON;
@@ -199,36 +196,34 @@ void SystemClock_Config(void)
     PeriphClkInitStruct.PLL2.PLL2RGE = RCC_PLL1VCIRANGE_2;
     PeriphClkInitStruct.PLL2.PLL2VCOSEL = RCC_PLL1VCOWIDE;
     PeriphClkInitStruct.PLL2.PLL2FRACN = 0;
+    #define FLASH_LATENCY FLASH_LATENCY_3
 
-  #define FLASH_LATENCY FLASH_LATENCY_3
-
-#else  // Common configuration for all other H723 boards with 25MHz crystals
+  #else  // Common configuration for all other H723 boards with 25MHz crystals
 
     RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
     RCC_OscInitStruct.HSEState = RCC_HSE_ON;
     RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
     RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
-    RCC_OscInitStruct.PLL.PLLM = 5;
-    RCC_OscInitStruct.PLL.PLLN = 96;
-    RCC_OscInitStruct.PLL.PLLP = 1;
-    RCC_OscInitStruct.PLL.PLLQ = 10;
-    RCC_OscInitStruct.PLL.PLLR = 2;
+    RCC_OscInitStruct.PLL.PLLM = 5;  // 25Mhz / 5 = 5Mhz
+    RCC_OscInitStruct.PLL.PLLN = 110; // 25Mhz / 5 * 110 = 550Mhz
+    RCC_OscInitStruct.PLL.PLLP = 1;  // 550Mhz / 1 = 550Mhz
+    RCC_OscInitStruct.PLL.PLLQ = 10; // 550Mhz / 10 = 55Mhz
+    RCC_OscInitStruct.PLL.PLLR = 10; // unused
     RCC_OscInitStruct.PLL.PLLRGE = RCC_PLL1VCIRANGE_2;
     RCC_OscInitStruct.PLL.PLLVCOSEL = RCC_PLL1VCOWIDE;
     RCC_OscInitStruct.PLL.PLLFRACN = 0;
 
-    PeriphClkInitStruct.PLL2.PLL2M = 5;
-    PeriphClkInitStruct.PLL2.PLL2N = 96;
-    PeriphClkInitStruct.PLL2.PLL2P = 1;
-    PeriphClkInitStruct.PLL2.PLL2Q = 10;
-    PeriphClkInitStruct.PLL2.PLL2R = 40;
+    PeriphClkInitStruct.PLL2.PLL2M = 15; // M DIV 15 vco 25 / 15 ~ 1.667 Mhz
+    PeriphClkInitStruct.PLL2.PLL2N = 96; // N MUL 96
+    PeriphClkInitStruct.PLL2.PLL2P = 2;  // P div 2
+    PeriphClkInitStruct.PLL2.PLL2Q = 2;  // Q div 2
+    PeriphClkInitStruct.PLL2.PLL2R = 2;  // R div 2
     PeriphClkInitStruct.PLL2.PLL2RGE = RCC_PLL1VCIRANGE_2;
     PeriphClkInitStruct.PLL2.PLL2VCOSEL = RCC_PLL1VCOWIDE;
     PeriphClkInitStruct.PLL2.PLL2FRACN = 0;
 
-#define FLASH_LATENCY FLASH_LATENCY_3
-
-#endif // STM32H723xx other boards
+    #define FLASH_LATENCY FLASH_LATENCY_3
+  #endif // STM32H723xx other boards
 #endif // STM32H723xx
 
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
@@ -257,7 +252,6 @@ void SystemClock_Config(void)
   PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_SDMMC|RCC_PERIPHCLK_SPI1;
   PeriphClkInitStruct.Spi123ClockSelection = RCC_SPI123CLKSOURCE_PLL2;
   PeriphClkInitStruct.SdmmcClockSelection = RCC_SDMMCCLKSOURCE_PLL2;
-  
   if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)
   {
     Error_Handler();

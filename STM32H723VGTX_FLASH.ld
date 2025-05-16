@@ -40,14 +40,12 @@ _estack = ORIGIN(RAM_D1) + LENGTH(RAM_D1);    /* end of RAM */
 _Min_Heap_Size = 0x200;      /* required amount of heap  */
 _Min_Stack_Size = 0x400; /* required amount of stack */
 
-// Specify the memory areas
-
-
+/* Specify the memory areas */
 MEMORY
 {
   FLASH (rx)        : ORIGIN = 0x08000000, LENGTH = 1024K
   DTCMRAM (xrw)     : ORIGIN = 0x20000000, LENGTH = 128K
-  RAM_D1 (xrw)      : ORIGIN = 0x24010000, LENGTH = 320K 
+  RAM_D1 (xrw)      : ORIGIN = 0x24000000, LENGTH = 320K 
   RAM_D2 (xrw)      : ORIGIN = 0x30000000, LENGTH = 32K
   RAM_D3 (xrw)      : ORIGIN = 0x38000000, LENGTH = 16K
   ITCMRAM (xrw)     : ORIGIN = 0x00000000, LENGTH = 64K

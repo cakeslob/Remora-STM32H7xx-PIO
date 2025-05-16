@@ -19,6 +19,7 @@
     ],
     "name": "STM32H723VG (564k RAM. 1024k Flash)",
     "upload": {
+
       "maximum_ram_size": 577536,
       "maximum_size": 1048576,
       "protocol": "stlink",
