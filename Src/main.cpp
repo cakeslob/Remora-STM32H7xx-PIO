@@ -62,7 +62,7 @@ int main(void)
 	MX_SDMMC1_SD_Init();
 	MX_FATFS_Init();
 
-  auto comms = std::make_unique<STM32H7_SPIComms>(&rxData, &txData, SPI1);
+  auto comms = std::make_unique<STM32H7_SPIComms>(&rxData, &txData, SPI2);
 	auto commsHandler = std::make_shared<CommsHandler>();
 	commsHandler->setInterface(std::move(comms));
 
@@ -86,12 +86,12 @@ int main(void)
   */
 void SystemClock_Config(void)
 {
-      // Clock configuration
-    // from grblhal
-    // - 480MHZ system clock
+  // Clock configuration
+  // from grblhal
+  // - 480MHZ system clock
 
-    // WeAct MiniSTM32H7xx & BTT SKR3 using 25MHz crystal
-    // Nucleo dev board using 8MHz clock source (STLink MCO)
+  // WeAct MiniSTM32H7xx & BTT SKR3 using 25MHz crystal
+  // Nucleo dev board using 8MHz clock source (STLink MCO)
   RCC_OscInitTypeDef RCC_OscInitStruct = {0};
   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
   RCC_PeriphCLKInitTypeDef PeriphClkInitStruct = {0};
@@ -249,7 +249,7 @@ void SystemClock_Config(void)
     Error_Handler();
   }
 
-  PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_SDMMC|RCC_PERIPHCLK_SPI1;
+  PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_SDMMC|RCC_PERIPHCLK_SPI2;
   PeriphClkInitStruct.Spi123ClockSelection = RCC_SPI123CLKSOURCE_PLL2;
   PeriphClkInitStruct.SdmmcClockSelection = RCC_SDMMCCLKSOURCE_PLL2;
   if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)
@@ -304,7 +304,7 @@ static void MX_USART1_UART_Init(void)
   /* USER CODE BEGIN USART1_Init 1 */
 
   /* USER CODE END USART1_Init 1 */
-  huart1.Instance = USART1;
+  huart1.Instance = USART3;
   huart1.Init.BaudRate = Config::pcBaud;
   huart1.Init.WordLength = UART_WORDLENGTH_8B;
   huart1.Init.StopBits = UART_STOPBITS_1;
@@ -352,11 +352,19 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOD_CLK_ENABLE();
 
+  #ifdef BOARD_BTT_SCYLLA
+  /*Configure GPIO pin : PD10 */
+  GPIO_InitStruct.Pin = GPIO_PIN_10;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
+  #else
   /*Configure GPIO pin : PC4 */
   GPIO_InitStruct.Pin = GPIO_PIN_4;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+  #endif
 
 }
 
