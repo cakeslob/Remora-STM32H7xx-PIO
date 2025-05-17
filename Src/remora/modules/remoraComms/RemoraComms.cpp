@@ -53,7 +53,7 @@ void RemoraComms::init()
     	// Interrupt pin is the NSS pin
         // Configure GPIO pin : PA_4
 
-        #ifdef BOARD_BTT_SCYLLA
+        #ifdef SPI2
         __HAL_RCC_GPIOB_CLK_ENABLE();
 
         GPIO_InitStruct.Pin = GPIO_PIN_12;
@@ -106,7 +106,7 @@ void RemoraComms::init()
 	    PA7     ------> SPI1_MOSI
 	    */
        
-        #ifdef BOARD_BTT_SCYLLA
+        #ifdef SPI2
        __HAL_RCC_GPIOB_CLK_ENABLE();
 
     	GPIO_InitStruct = {0};
