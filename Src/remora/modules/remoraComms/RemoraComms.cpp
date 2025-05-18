@@ -28,7 +28,7 @@ RemoraComms::RemoraComms(volatile rxData_t* ptrRxData, volatile txData_t* ptrTxD
     this->spiHandle.Instance = this->spiType;
     this->status = false;
 
-    this->irqNss = 		EXTI4_IRQn;
+    this->irqNss = 		EXTI15_10_IRQn;
     this->irqDMAtx = 	DMA1_Stream0_IRQn;
     this->irqDMArx = 	DMA1_Stream1_IRQn;
 
