@@ -213,14 +213,20 @@ void SystemClock_Config(void)
     RCC_OscInitStruct.PLL.PLLVCOSEL = RCC_PLL1VCOWIDE;
     RCC_OscInitStruct.PLL.PLLFRACN = 0;
 
-    PeriphClkInitStruct.PLL2.PLL2M = 15; // M DIV 15 vco 25 / 15 ~ 1.667 Mhz
-    PeriphClkInitStruct.PLL2.PLL2N = 96; // N MUL 96
-    PeriphClkInitStruct.PLL2.PLL2P = 2;  // P div 2
-    PeriphClkInitStruct.PLL2.PLL2Q = 2;  // Q div 2
-    PeriphClkInitStruct.PLL2.PLL2R = 2;  // R div 2
-    PeriphClkInitStruct.PLL2.PLL2RGE = RCC_PLL1VCIRANGE_2;
-    PeriphClkInitStruct.PLL2.PLL2VCOSEL = RCC_PLL1VCOWIDE;
-    PeriphClkInitStruct.PLL2.PLL2FRACN = 0;
+    PeriphClkInitStruct.PLL2.PLL2M = 2;
+    PeriphClkInitStruct.PLL2.PLL2N = 16;
+    PeriphClkInitStruct.PLL2.PLL2P = 1;
+    PeriphClkInitStruct.PLL2.PLL2Q = 10;
+    PeriphClkInitStruct.PLL2.PLL2R = 2;
+    PeriphClkInitStruct.PLL2.PLL2RGE = RCC_PLL2VCIRANGE_3;
+    PeriphClkInitStruct.PLL2.PLL2VCOSEL = RCC_PLL2VCOWIDE;
+    PeriphClkInitStruct.PLL2.PLL2FRACN = 0.0;
+
+
+
+
+
+
 
     #define FLASH_LATENCY FLASH_LATENCY_3
   #endif // STM32H723xx other boards

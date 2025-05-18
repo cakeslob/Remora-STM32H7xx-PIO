@@ -26,23 +26,14 @@ void STM32H7_SPIComms::init() {
     if(spiHandle.Instance == SPI2)
     {
     	// Interrupt pin is the NSS pin
-        // Configure GPIO pin : PA_4
-
-        #ifdef SPI2
+        // Configure GPIO pin : PB_12
         __HAL_RCC_GPIOB_CLK_ENABLE();
 
         GPIO_InitStruct.Pin = GPIO_PIN_12;
         GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
         GPIO_InitStruct.Pull = GPIO_NOPULL;
         HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-        #else
-        __HAL_RCC_GPIOC_CLK_ENABLE();
 
-        GPIO_InitStruct.Pin = GPIO_PIN_4;
-        GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
-        GPIO_InitStruct.Pull = GPIO_NOPULL;
-        HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-        #endif
 
         printf("Initialising SPI2 slave\n");
 
@@ -84,7 +75,7 @@ void STM32H7_SPIComms::init() {
     	GPIO_InitStruct = {0};
 	    GPIO_InitStruct.Pin = GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15;
 	    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-	    GPIO_InitStruct.Pull = GPIO_NOPULL;
+	    GPIO_InitStruct.Pull = GPIO_PULLUP;
 	    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
 	    GPIO_InitStruct.Alternate = GPIO_AF5_SPI2;
 	    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
