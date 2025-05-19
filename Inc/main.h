@@ -51,7 +51,7 @@ extern "C" {
 
 /* Exported functions prototypes ---------------------------------------------*/
 void Error_Handler(void);
-void MX_SPI2_Init(void);
+void MX_SPI4_Init(void);
 
 /* USER CODE BEGIN EFP */
 

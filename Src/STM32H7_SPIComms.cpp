@@ -23,19 +23,19 @@ STM32H7_SPIComms::~STM32H7_SPIComms() {
 void STM32H7_SPIComms::init() {
 	GPIO_InitTypeDef GPIO_InitStruct = {0};
 
-    if(spiHandle.Instance == SPI2)
+    if(spiHandle.Instance == SPI4)
     {
     	// Interrupt pin is the NSS pin
         // Configure GPIO pin : PB_12
-        __HAL_RCC_GPIOB_CLK_ENABLE();
+        __HAL_RCC_GPIOE_CLK_ENABLE();
 
-        GPIO_InitStruct.Pin = GPIO_PIN_12;
+        GPIO_InitStruct.Pin = GPIO_PIN_11;
         GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
         GPIO_InitStruct.Pull = GPIO_NOPULL;
-        HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+        HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
 
 
-        printf("Initialising SPI2 slave\n");
+        printf("Initialising SPI4 slave\n");
 
         spiHandle.Init.Mode           			= SPI_MODE_SLAVE;
         spiHandle.Init.Direction      			= SPI_DIRECTION_2LINES;
@@ -61,11 +61,11 @@ void STM32H7_SPIComms::init() {
         HAL_SPI_Init(&this->spiHandle);
 
     	// Peripheral clock enable
-    	__HAL_RCC_SPI2_CLK_ENABLE();
+    	__HAL_RCC_SPI4_CLK_ENABLE();
 
 		printf("Initialising GPIO for SPI\n");
 
-	    __HAL_RCC_GPIOB_CLK_ENABLE();
+	    __HAL_RCC_GPIOE_CLK_ENABLE();
 	    /**SPI1 GPIO Configuration
 	    PA4     ------> SPI1_NSS
 	    PA5     ------> SPI1_SCK
@@ -73,17 +73,17 @@ void STM32H7_SPIComms::init() {
 	    PA7     ------> SPI1_MOSI
 	    */
     	GPIO_InitStruct = {0};
-	    GPIO_InitStruct.Pin = GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15;
+	    GPIO_InitStruct.Pin = GPIO_PIN_11|GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14;
 	    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
 	    GPIO_InitStruct.Pull = GPIO_PULLUP;
 	    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-	    GPIO_InitStruct.Alternate = GPIO_AF5_SPI2;
-	    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+	    GPIO_InitStruct.Alternate = GPIO_AF5_SPI4;
+	    HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
 
         printf("Initialising DMA for SPI\n");
 
         hdma_spi_tx.Instance 					= DMA1_Stream0;
-        hdma_spi_tx.Init.Request 				= DMA_REQUEST_SPI2_TX;
+        hdma_spi_tx.Init.Request 				= DMA_REQUEST_SPI4_TX;
         hdma_spi_tx.Init.Direction 				= DMA_MEMORY_TO_PERIPH;
         hdma_spi_tx.Init.PeriphInc 				= DMA_PINC_DISABLE;
         hdma_spi_tx.Init.MemInc 				= DMA_MINC_ENABLE;
@@ -97,7 +97,7 @@ void STM32H7_SPIComms::init() {
         __HAL_LINKDMA(&spiHandle, hdmatx, hdma_spi_tx);
 
         hdma_spi_rx.Instance 					= DMA1_Stream1;
-        hdma_spi_rx.Init.Request 				= DMA_REQUEST_SPI2_RX;
+        hdma_spi_rx.Init.Request 				= DMA_REQUEST_SPI4_RX;
         hdma_spi_rx.Init.Direction 				= DMA_PERIPH_TO_MEMORY;
         hdma_spi_rx.Init.PeriphInc 				= DMA_PINC_DISABLE;
         hdma_spi_rx.Init.MemInc 				= DMA_MINC_ENABLE;

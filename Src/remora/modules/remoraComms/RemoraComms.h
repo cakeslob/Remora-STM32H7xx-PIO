@@ -29,7 +29,7 @@ class RemoraComms : public Module
 {
     private:
 
-		Pin							*pin1, *pin2;
+
 
         volatile rxData_t*  		ptrRxData;
         volatile txData_t*  		ptrTxData;
