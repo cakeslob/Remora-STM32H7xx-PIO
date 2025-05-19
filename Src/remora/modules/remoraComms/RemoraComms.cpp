@@ -104,7 +104,7 @@ void RemoraComms::init()
     	GPIO_InitStruct = {0};
 	    GPIO_InitStruct.Pin = GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15;
 	    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-	    GPIO_InitStruct.Pull = GPIO_PULLUP;
+	    GPIO_InitStruct.Pull = GPIO_PULLDOWN;
 	    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
 	    GPIO_InitStruct.Alternate = GPIO_AF5_SPI2;
 	    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
@@ -150,7 +150,7 @@ void RemoraComms::init()
         HAL_DMA_Init(&this->hdma_spi_rx);
         __HAL_LINKDMA(&this->spiHandle, hdmarx, this->hdma_spi_rx);
 
-        printf("	Initialising DMA for Memory to Memory transfer\n");
+        printf(" Module	Initialising DMA for Memory to Memory transfer\n");
 
         this->hdma_memtomem.Instance 				= DMA1_Stream2;
         this->hdma_memtomem.Init.Request 			= DMA_REQUEST_MEM2MEM;
