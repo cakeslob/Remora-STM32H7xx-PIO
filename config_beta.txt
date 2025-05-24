@@ -1,0 +1,259 @@
+{
+   "Board":"BTT SCYLLA",
+   "Modules":[
+      {
+         "Thread":"Servo",
+         "Type":"Reset Pin",
+         "Comment":"Reset pin",
+         "Pin":"PC_6"
+      },
+      {
+         "Thread":"Base",
+         "Type":"Stepgen",
+         "Comment":"X - Joint 0 step generator (X Gantry)",
+         "Joint Number":0,
+         "Step Pin":"PA_0",
+         "Direction Pin":"PA_1",
+         "Enable Pin":"PC_0"
+      },
+      {
+         "Thread":"Base",
+         "Type":"Stepgen",
+         "Comment":"Y - Joint 1 step generator (Y Bed)",
+         "Joint Number":1,
+         "Step Pin":"PC_13",
+         "Direction Pin":"PE_4",
+         "Enable Pin":"PC_2"
+      },
+      {
+         "Thread":"Base",
+         "Type":"Stepgen",
+         "Comment":"Z - Joint 2 step generator (Z Head)",
+         "Joint Number":2,
+         "Step Pin":"PB_9",
+         "Direction Pin":"PE_0",
+         "Enable Pin":"PE_3"
+      },
+      {
+         "Thread":"Base",
+         "Type":"Stepgen",
+         "Comment":"A - Joint 3 step generator (A Rotary)",
+         "Joint Number":3,
+         "Step Pin":"PD_3",
+         "Direction Pin":"PD_4",
+         "Enable Pin":"PE_1"
+      },
+      {
+         "Thread":"On load",
+         "Type":"TMC5160",
+         "Comment":"X - Joint 0 TMC driver 3.4A",
+         "CS pin":"PC_15",
+         "MOSI pin":"PE_6",
+         "MISO pin":"PE_5",
+         "SCK pin":"PE_2",
+         "RSense":0.05,
+         "Current":800,
+         "Microsteps":2,
+         "Stealth chop":"off"
+      },
+      {
+         "Thread":"On load",
+         "Type":"TMC5160",
+         "Comment":"Y - Joint 1 TMC driver 3.4A",
+         "CS pin":"PC_14",
+         "MOSI pin":"PE_6",
+         "MISO pin":"PE_5",
+         "SCK pin":"PE_2",
+         "RSense":0.05,
+         "Current":800,
+         "Microsteps":2,
+         "Stealth chop":"off"
+      },
+      {
+         "Thread":"On load",
+         "Type":"TMC5160",
+         "Comment":"Z - Joint 2 TMC driver 3.4A",
+         "CS pin":"PB_8",
+         "MOSI pin":"PE_6",
+         "MISO pin":"PE_5",
+         "SCK pin":"PE_2",
+         "RSense":0.05,
+         "Current":800,
+         "Microsteps":2,
+         "Stealth chop":"off"
+      },
+      {
+         "Thread":"On load",
+         "Type":"TMC5160",
+         "Comment":"A - Joint 3 TMC driver 3.4A",
+         "CS pin":"PB_7",
+         "MOSI pin":"PE_6",
+         "MISO pin":"PE_5",
+         "SCK pin":"PE_2",
+         "RSense":0.05,
+         "Current":800,
+         "Microsteps":2,
+         "Stealth chop":"off"
+      },
+      {
+         "Thread":"Servo",
+         "Type":"Digital Pin",
+         "Comment":"X - Limit (both sides)",
+         "Pin":"PD_11",
+         "Mode":"Input",
+         "Modifier":"Pull Up",
+         "Invert":"True",
+         "Data Bit":0
+      },
+      {
+         "Thread":"Servo",
+         "Type":"Digital Pin",
+         "Comment":"Y - Limit (both sides)",
+         "Pin":"PA_8",
+         "Mode":"Input",
+         "Modifier":"Pull Up",
+         "Invert":"True",
+         "Data Bit":1
+      },
+      {
+         "Thread":"Servo",
+         "Type":"Digital Pin",
+         "Comment":"Z - Limit (both sides)",
+         "Pin":"PC_7",
+         "Mode":"Input",
+         "Modifier":"Pull Up",
+         "Invert":"True",
+         "Data Bit":2
+      },
+      {
+         "Thread":"Servo",
+         "Type":"Digital Pin",
+         "Comment":"A - Limit",
+         "Pin":"PD_15",
+         "Mode":"Input",
+         "Modifier":"Pull Up",
+         "Invert":"True",
+         "Data Bit":3
+      },
+      {
+         "Thread":"Servo",
+         "Type":"Digital Pin",
+         "Comment":"Safety Door (not in use)",
+         "Pin":"PD_13",
+         "Mode":"Input",
+         "Modifier":"Pull Up",
+         "Invert":"True",
+         "Data Bit":4
+      },
+      {
+         "Thread":"Servo",
+         "Type":"Digital Pin",
+         "Comment":"Probe  (tool setter and probe)",
+         "Pin":"PD_12",
+         "Mode":"Input",
+         "Modifier":"Pull Up",
+         "Invert":"True",
+         "Data Bit":5
+      },
+      {
+         "Thread":"Servo",
+         "Type":"Digital Pin",
+         "Comment":"Tool set",
+         "Pin":"PD_14",
+         "Mode":"Input",
+         "Modifier":"Pull Up",
+         "Invert":"True",
+         "Data Bit":6
+      },
+      {
+         "Thread":"Servo",
+         "Type":"Digital Pin",
+         "Comment":"Aux 0",
+         "Pin":"PA_4",
+         "Mode":"Output",
+         "Modifier":"Pull None",
+         "Invert":"False",
+         "Data Bit":0
+      },
+      {
+         "Thread":"Servo",
+         "Type":"Digital Pin",
+         "Comment":"Aux 1",
+         "Pin":"PA_5",
+         "Mode":"Output",
+         "Modifier":"Pull None",
+         "Invert":"False",
+         "Data Bit":1
+      },
+      {
+         "Thread":"Servo",
+         "Type":"Digital Pin",
+         "Comment":"Aux 2",
+         "Pin":"PA_6",
+         "Mode":"Output",
+         "Modifier":"Pull None",
+         "Invert":"False",
+         "Data Bit":2
+      },
+      {
+         "Thread":"Servo",
+         "Type":"Digital Pin",
+         "Comment":"Spindle enable",
+         "Pin":"PC_5",
+         "Mode":"Output",
+         "Modifier":"Pull None",
+         "Invert":"False",
+         "Data Bit":3
+      },
+      {
+         "Thread":"Servo",
+         "Type":"Digital Pin",
+         "Comment":"Spindle PWM",
+         "Pin":"PB_1",
+         "Mode":"Output",
+         "Modifier":"Pull None",
+         "Invert":"False",
+         "Data Bit":4
+      },
+      {
+         "Thread":"Servo",
+         "Type":"Digital Pin",
+         "Comment":"Spindle dir",
+         "Pin":"PB_0",
+         "Mode":"Output",
+         "Modifier":"Pull None",
+         "Invert":"False",
+         "Data Bit":5
+      },
+      {
+         "Thread":"Servo",
+         "Type":"Digital Pin",
+         "Comment":"Coolant flood",
+         "Pin":"PC_4",
+         "Mode":"Output",
+         "Modifier":"Pull None",
+         "Invert":"False",
+         "Data Bit":6
+      },
+      {
+         "Thread":"Servo",
+         "Type":"Digital Pin",
+         "Comment":"Coolant mist (MQL)",
+         "Pin":"PA_7",
+         "Mode":"Output",
+         "Modifier":"Pull None",
+         "Invert":"False",
+         "Data Bit":7
+      },
+      {
+         "Thread":"Servo",
+         "Type":"Digital Pin",
+         "Comment":"Relay",
+         "Pin":"PD_5",
+         "Mode":"Output",
+         "Modifier":"Pull None",
+         "Invert":"False",
+         "Data Bit":8
+      }
+   ]
+}
