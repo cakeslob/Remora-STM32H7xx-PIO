@@ -28,6 +28,9 @@ Remora::Remora(std::shared_ptr<CommsHandler> commsHandler,
 	  threadsRunning(false)
 {
 	configHandler = std::make_unique<JsonConfigHandler>(this);
+
+    updateHeader();
+
     comms->init();
     comms->start();
 
@@ -46,6 +49,11 @@ Remora::Remora(std::shared_ptr<CommsHandler> commsHandler,
     }
 
     servoThread->registerModule(comms);
+}
+
+void Remora::updateHeader()
+{
+    ptrTxData->header = Config::pruData | remoraStatus;
 }
 
 void Remora::transitionToState(State newState)
@@ -132,6 +140,18 @@ void Remora::resetBuffer(volatile uint8_t* buffer, size_t size)
 void Remora::run()
 {
     while (true) {
+        updateHeader();
+
+        if (remoraStatus & 0x80) {
+            if (!fatalErrorHandled) {
+                printf("Fatal error detected. Halting Remora state machine.\n");
+                fatalErrorHandled = true;
+            }
+
+            comms->tasks(); 
+            continue;
+        }
+
         switch (currentState) {
             case ST_SETUP:
                 handleSetupState();

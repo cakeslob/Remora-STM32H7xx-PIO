@@ -8,6 +8,7 @@
 
 #include "configuration.h"
 #include "data.h"
+#include "remoraStatus.h"
 #include "comms/commsInterface.h"
 #include "modules/moduleFactory.h"
 #include "modules/moduleList.h"
@@ -52,8 +53,12 @@ private:
     uint32_t servoFreq;
     uint32_t serialFreq;
 
+    uint8_t remoraStatus;
+    bool fatalErrorHandled;
+
     bool threadsRunning = false;
 
+    void updateHeader();
     void transitionToState(State);
 	void printStateEntry(State);
     void handleSetupState();
@@ -77,6 +82,8 @@ public:
 	
     void setBaseFreq(uint32_t freq) { baseFreq = freq; }
     void setServoFreq(uint32_t freq) { servoFreq = freq; }
+    void setStatus(uint8_t status) { remoraStatus = status; }
+    uint8_t getStatus() { return remoraStatus; }
 
     volatile txData_t* getTxData() { return &txData; }
     volatile rxData_t* getRxData() { return &rxData; }

@@ -52,11 +52,18 @@ void TMC5160::configure()
             default: printf("Unknown issue\n"); break;
         }
         printf("Fix the problem and reset the board.\n");
+        instance->setStatus(makeRemoraStatus(RemoraErrorSource::TMC_DRIVER, RemoraErrorCode::TMC_DRIVER_ERROR, true));
     } else {
         printf("OK\n");
     }
 
+    if(instance->getStatus() & 0x80)
+    {
+        return;
+    }
+
     // Configure driver settings
+    printf("Configuring driver\n");
     driver->toff(TOFF_VALUE);
     driver->blank_time(24);
     driver->rms_current(mA);

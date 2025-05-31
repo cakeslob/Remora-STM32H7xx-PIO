@@ -1,15 +1,15 @@
 #include "pin.h"
 #include <cstdio>
 
-Pin::Pin(const std::string& portAndPin, int dir) 
-    : portAndPin(portAndPin), dir(dir), modifier(NONE) {
+Pin::Pin(const std::string& portAndPin, int mode) 
+    : portAndPin(portAndPin), mode(mode), modifier(NONE) {
     configurePin();
     enableClock();
     initialisePin();
 }
 
-Pin::Pin(const std::string& portAndPin, int dir, int modifier) 
-    : portAndPin(portAndPin), dir(dir), modifier(modifier) {
+Pin::Pin(const std::string& portAndPin, int mode, int modifier) 
+    : portAndPin(portAndPin), mode(mode), modifier(modifier) {
     configurePin();
     enableClock();
     initialisePin();
@@ -29,7 +29,7 @@ void Pin::configurePin() {
     
     GPIOx = gpioPorts[portIndex];
     
-    mode = (dir == INPUT) ? GPIO_MODE_INPUT : GPIO_MODE_OUTPUT_PP;
+    //mode = (dir == INPUT) ? GPIO_MODE_INPUT : GPIO_MODE_OUTPUT_PP;
     pull = (modifier == PULLUP) ? GPIO_PULLUP :
            (modifier == PULLDOWN) ? GPIO_PULLDOWN :
            GPIO_NOPULL;

@@ -5,7 +5,7 @@
 #include <string>
 
 #include "../../modules/module.h"
-#include "../../drivers/pin/pin.h"
+#include "../../hal/pin/pin.h"
 
 class Debug : public Module
 {

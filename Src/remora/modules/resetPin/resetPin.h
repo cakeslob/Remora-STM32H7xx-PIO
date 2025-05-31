@@ -5,7 +5,7 @@
 #include <memory>
 #include "../../remora.h"
 #include "../../modules/module.h"
-#include "../../drivers/pin/pin.h"
+#include "../../hal/pin/pin.h"
 
 // Global PRUreset variable (declared in extern.h or another source file)
 extern volatile bool PRUreset;

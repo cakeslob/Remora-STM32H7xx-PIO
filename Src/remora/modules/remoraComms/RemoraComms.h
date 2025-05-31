@@ -8,8 +8,6 @@
 #include "../../modules/module.h"
 #include "../../modules/moduleinterrupt.h"
 
-#include "../../drivers/pin/pin.h" //TODO: remove
-
 
 typedef struct
 {

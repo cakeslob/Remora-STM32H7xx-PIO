@@ -21,6 +21,8 @@ std::shared_ptr<Module> ModuleFactory::createModule(const char* _tname,
             return DigitalPin::create(config, instance);
         } else if (strcmp(_mtype, "Sigma Delta") == 0) {
             return SigmaDelta::create(config, instance);
+        } else if (strcmp(_mtype, "Temperature") == 0) {
+            return Temperature::create(config, instance);
         }
     } else if (strcmp(_tname, "On load") == 0) {
     	if (strcmp(_mtype, "TMC2208") == 0) {

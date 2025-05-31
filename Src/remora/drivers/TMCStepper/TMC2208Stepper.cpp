@@ -3,9 +3,9 @@
 
 // Protected
 // addr needed for TMC2209
-TMC2208Stepper::TMC2208Stepper(std::string SWRXpin, std::string SWTXpin, float RS, uint8_t addr) :
-    SWRXpin(SWRXpin),
-    SWTXpin(SWRXpin),
+TMC2208Stepper::TMC2208Stepper(std::string _SWRXpin, std::string _SWTXpin, float RS, uint8_t addr) :
+    SWRXpin(_SWRXpin),
+    SWTXpin(_SWRXpin),
     TMCStepper(RS),
     //RXTX_pin(SW_RX_pin == SW_TX_pin ? SW_RX_pin : 0),
     slave_address(addr)

@@ -5,7 +5,7 @@
 
 #include "../../remora.h"
 #include "../../modules/module.h"
-#include "../../drivers/pin/pin.h"
+#include "../../hal/pin/pin.h"
 
 /**
  * @class Stepgen

@@ -1,6 +1,6 @@
 #include <cstdint>
 #include "../SoftwareSerial/softwareSerial.h"
-#include "../pin/pin.h"
+#include "../../hal/pin/pin.h"
 #include "../SoftwareSPI/SoftwareSPI.h"
 
 #include "TMC2130_bitfields.h"
@@ -940,8 +940,8 @@ class TMC2208Stepper : public TMCStepper {
 
         TMC2208Stepper(std::string SWRXpin, std::string SWTXpin, float RS, uint8_t addr);
 
-        std::string SWTXpin;
         std::string SWRXpin;
+        std::string SWTXpin;
 
         int available();
         void preWriteCommunication();

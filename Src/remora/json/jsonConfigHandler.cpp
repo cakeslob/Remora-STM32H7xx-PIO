@@ -4,29 +4,37 @@
 
 
 JsonConfigHandler::JsonConfigHandler(Remora* _remora) :
-	remoraInstance(_remora),
-	configError(false)
+	remoraInstance(_remora)
 {
-	loadConfiguration();
+	uint8_t status = loadConfiguration();
+    remoraInstance->setStatus(status);
+    if (status != 0x00) {
+        return;
+    }
     updateThreadFreq();
 }
 
-bool JsonConfigHandler::loadConfiguration() {
+uint8_t JsonConfigHandler::loadConfiguration() {
 	// Clear any existing configuration
     jsonContent.clear();
     doc.clear();
 
     // Read and parse the configuration file
-    if (!readFileContents()) {
-        return false;
+    uint8_t status = readFileContents();
+    if (status != 0x00) {
+        return status;
     }
-    parseJson();
-    return true;
+
+    status = parseJson();
+    if (status != 0x00) {
+        return status;
+    }
+
+    return status;
 }
 
 
 void JsonConfigHandler::updateThreadFreq() {
-    if (configError) return;
 
     JsonArray Threads = doc["Threads"];
 
@@ -53,7 +61,7 @@ JsonArray JsonConfigHandler::getModules() {
         return JsonArray();
 }
 
-bool JsonConfigHandler::readFileContents() {
+uint8_t JsonConfigHandler::readFileContents() {
 
 	uint32_t bytesread; // bytes read count
 
@@ -64,48 +72,44 @@ bool JsonConfigHandler::readFileContents() {
     if(f_mount(&SDFatFS, (TCHAR const*)SDPath, 0) != FR_OK)
 	{
     	printf("Failed to mount SD card\n\r");
-    	Error_Handler();
+    	return makeRemoraStatus(RemoraErrorSource::JSON_CONFIG, RemoraErrorCode::SD_MOUNT_FAILED, true);
 	}
-    else
+
+    //Open file for reading
+    if(f_open(&SDFile, filename, FA_READ) != FR_OK)
     {
-		//Open file for reading
-		if(f_open(&SDFile, filename, FA_READ) != FR_OK)
-		{
-			printf("Failed to open JSON config file\n\n");
-			Error_Handler();
-		}
-		else
-		{
-			int32_t length = f_size(&SDFile);
-			printf("JSON config file lenght = %2ld\n", length);
-
-			__attribute__((aligned(32))) char rtext[length];
-			if(f_read(&SDFile, rtext, length, (UINT *)&bytesread) != FR_OK)
-			{
-				printf("JSON config file read FAILURE\n\n");
-			}
-			else
-			{
-				printf("JSON config file read SUCCESS!\n\n");
-				// put JSON char array into std::string
-				jsonContent.reserve(length + 1);
-			    for (int i = 0; i < length; i++) {
-			    	jsonContent = jsonContent + rtext[i];
-			    }
-
-			    // Remove comments from next line to print out the JSON config file
-			    //printf("\n%s\n", jsonContent.c_str());
-			}
-
-			f_close(&SDFile);
-		}
+        printf("Failed to open JSON config file\n\n");
+        return makeRemoraStatus(RemoraErrorSource::JSON_CONFIG, RemoraErrorCode::CONFIG_FILE_OPEN_FAILED, true);
     }
 
-	return true;
+    int32_t length = f_size(&SDFile);
+    printf("JSON config file lenght = %2ld\n", length);
+
+    __attribute__((aligned(32))) char rtext[length];
+    if(f_read(&SDFile, rtext, length, (UINT *)&bytesread) != FR_OK)
+    {
+        printf("JSON config file read FAILURE\n\n");
+        f_close(&SDFile);
+		return makeRemoraStatus(RemoraErrorSource::JSON_CONFIG, RemoraErrorCode::CONFIG_FILE_READ_FAILED, true);
+    }
+
+    printf("JSON config file read SUCCESS!\n\n");
+    // put JSON char array into std::string
+    jsonContent.reserve(length + 1);
+    for (int i = 0; i < length; i++) {
+        jsonContent = jsonContent + rtext[i];
+    }
+
+    // Remove comments from next line to print out the JSON config file
+    //printf("\n%s\n", jsonContent.c_str());
+
+    f_close(&SDFile);
+
+	return makeRemoraStatus(RemoraErrorSource::NO_ERROR, RemoraErrorCode::NO_ERROR);
 }
 
 
-bool JsonConfigHandler::parseJson() {
+uint8_t JsonConfigHandler::parseJson() {
 	
 	printf("\nParsing JSON configuration file\n");
 	
@@ -121,22 +125,22 @@ bool JsonConfigHandler::parseJson() {
     {
         case DeserializationError::Ok:
             printf("Deserialization succeeded\n\n");
-            break;
+            return makeRemoraStatus(RemoraErrorSource::NO_ERROR, RemoraErrorCode::NO_ERROR);
+
         case DeserializationError::InvalidInput:
             printf("Invalid input!\n");
-            configError = true;
-            break;
+            return makeRemoraStatus(RemoraErrorSource::JSON_CONFIG, RemoraErrorCode::CONFIG_INVALID_INPUT, true);
+
         case DeserializationError::NoMemory:
             printf("Not enough memory\\nn");
-            configError = true;
-            break;
+            return makeRemoraStatus(RemoraErrorSource::JSON_CONFIG, RemoraErrorCode::CONFIG_NO_MEMORY, true);
+
         default:
             printf("Deserialization failed: ");
             printf(error.c_str());
             printf("\n\n");
-            configError = true;
-            break;
+            return makeRemoraStatus(RemoraErrorSource::JSON_CONFIG, RemoraErrorCode::CONFIG_PARSE_FAILED, true);
     }
 
-    return true;
+    return makeRemoraStatus(RemoraErrorSource::NO_ERROR, RemoraErrorCode::NO_ERROR);
 }

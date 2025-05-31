@@ -4,7 +4,7 @@
 #include <cstdint>
 #include <cstring>
 #include "../../configuration.h"
-#include "../pin/pin.h"
+#include "../../hal/pin/pin.h"
 
 
 #define FORCE_BAUD_RATE 19600 //9600

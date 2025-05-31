@@ -3,7 +3,7 @@
 
 #include <cstdint>
 #include <string>
-#include "../../drivers/pin/pin.h"
+#include "../../hal/pin/pin.h"
 
 enum BitOrder { MSB_FIRST, LSB_FIRST };
 enum ByteOrder { MSB_FIRST_BYTE, LSB_FIRST_BYTE };

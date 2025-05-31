@@ -7,6 +7,7 @@
 #include "../../remora.h"
 #include "../../modules/module.h"
 #include "../../drivers/TMCStepper/TMCStepper.h"
+#include "../../remoraStatus.h"
 
 class TMC : public Module, public std::enable_shared_from_this<TMC>
 {

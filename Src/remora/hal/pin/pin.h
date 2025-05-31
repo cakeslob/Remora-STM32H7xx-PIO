@@ -17,12 +17,12 @@
 class Pin {
 private:
     std::string portAndPin;
-    uint8_t dir;
+    uint8_t mode;
     uint8_t modifier;
     uint8_t portIndex;
     uint16_t pinNumber;
     uint16_t pin;
-    uint32_t mode;
+    //uint32_t mode;
     uint32_t pull;
     GPIO_TypeDef* GPIOx;
     GPIO_InitTypeDef GPIO_InitStruct = {0};
@@ -32,8 +32,8 @@ private:
     void enableClock();
 
 public:
-    Pin(const std::string& portAndPin, int dir);
-    Pin(const std::string& portAndPin, int dir, int modifier);
+    Pin(const std::string& portAndPin, int mode);
+    Pin(const std::string& portAndPin, int mode, int modifier);
     bool get() const;
     void set(bool value);
     void setAsOutput();

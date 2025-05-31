@@ -4,7 +4,7 @@
 #include <string>
 #include "../../remora.h"
 #include "../../modules/module.h"
-#include "../../drivers/pin/pin.h"
+#include "../../hal/pin/pin.h"
 
 class SigmaDelta : public Module {
 private:

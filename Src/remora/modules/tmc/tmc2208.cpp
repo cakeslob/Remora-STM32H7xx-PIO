@@ -48,11 +48,20 @@ void TMC2208::configure()
             default: printf("Unknown issue\n"); break;
         }
         printf("Fix the problem and reset the board.\n");
+        instance->setStatus(makeRemoraStatus(RemoraErrorSource::TMC_DRIVER, RemoraErrorCode::TMC_DRIVER_ERROR, true));
     } else {
         printf("OK\n");
     }
 
+    if(instance->getStatus() & 0x80)
+    {
+        printf("\nStopping the Serial thread\n");
+        instance->getSerialThread()->stopThread();
+        instance->getSerialThread()->unregisterModule(self);
+    }
+
     // Configure driver settings
+    printf("Configuring driver\n");
     driver->toff(TOFF_VALUE);
     driver->blank_time(24);
     driver->rms_current(mA);

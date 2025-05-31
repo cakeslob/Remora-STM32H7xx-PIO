@@ -164,8 +164,6 @@ void STM32H7_SPIComms::start() {
     std::fill(std::begin(ptrRxDMABuffer->buffer[0].rxBuffer), std::end(ptrRxDMABuffer->buffer[0].rxBuffer), 0);
     std::fill(std::begin(ptrRxDMABuffer->buffer[1].rxBuffer), std::end(ptrRxDMABuffer->buffer[1].rxBuffer), 0);
 
-    ptrTxData->header = Config::pruData;
-
     // Start the multi-buffer DMA SPI communication
     dmaStatus = startMultiBufferDMASPI(
         (uint8_t*)ptrTxData->txBuffer,

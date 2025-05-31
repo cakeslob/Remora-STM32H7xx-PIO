@@ -16,13 +16,13 @@ private:
 	const char* filename = "config.txt";
 	JsonDocument doc;
 	JsonObject thread;
-	bool configError;
-	bool readFileContents();
-	bool parseJson();
+	//bool configError;
+	uint8_t loadConfiguration();
+	uint8_t readFileContents();
+	uint8_t parseJson();
 
 public:
 	JsonConfigHandler(Remora* _remora);
-	bool loadConfiguration();
 	void updateThreadFreq();
 	JsonArray getModules();
 	JsonObject getModuleConfig(const char* threadName, const char* moduleType);

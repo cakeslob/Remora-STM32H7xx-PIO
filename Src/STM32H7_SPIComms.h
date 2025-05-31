@@ -11,6 +11,19 @@
 #include "remora/comms/commsInterface.h"
 #include "remora/modules/moduleInterrupt.h"
 
+typedef struct
+{
+  __IO uint32_t ISR;   /*!< DMA interrupt status register */
+  __IO uint32_t Reserved0;
+  __IO uint32_t IFCR;  /*!< DMA interrupt flag clear register */
+} DMA_Base_Registers;
+
+typedef enum {
+    DMA_HALF_TRANSFER = 1,   // Half-transfer completed
+    DMA_TRANSFER_COMPLETE = 2, // Full transfer completed
+    DMA_OTHER = 3        // Other or error status
+} DMA_TransferStatus_t;
+
 class STM32H7_SPIComms : public CommsInterface {
 private:
     volatile rxData_t*  		ptrRxData;
