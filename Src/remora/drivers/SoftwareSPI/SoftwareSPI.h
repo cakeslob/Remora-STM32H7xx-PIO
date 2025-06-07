@@ -22,8 +22,6 @@ private:
     BitOrder bitOrder;
     ByteOrder byteOrder;
 
-    void delay();
-
 public:
     // Constructor WITHOUT chip select
     SoftwareSPI(const std::string& mosiPin, const std::string& misoPin, const std::string& clkPin,
@@ -37,6 +35,7 @@ public:
 
     void begin();
     void end();
+    void delay();
     void setSPIMode(uint8_t mode);
     void setClockDivider(uint32_t div);
     void transfer(uint8_t* data, size_t length);

@@ -102,7 +102,12 @@ uint32_t TMC2130Stepper::read(uint8_t addressByte) {
     if (!TMC_SW_SPI) return 0; // Ensure SPI instance is valid
 
     beginTransaction();
-    if (cs) cs->set(false); // Pull CS low
+
+    if (cs) 
+    {
+        cs->set(false); // Pull CS low
+        TMC_SW_SPI->delay();
+    }
 
     uint8_t datagram[5] = { addressByte, 0, 0, 0, 0 };
     TMC_SW_SPI->transfer(datagram, 5); // Send address and receive response
@@ -113,8 +118,13 @@ uint32_t TMC2130Stepper::read(uint8_t addressByte) {
         i++;
     }
 
-    if (cs) cs->set(true); // Pull CS high
-    if (cs) cs->set(false); // Pull CS low again
+    if (cs) 
+    {
+        cs->set(true); // Pull CS high
+        TMC_SW_SPI->delay();
+        cs->set(false); // Pull CS low
+        TMC_SW_SPI->delay();
+    }
 
     while (i < chain_length) {
         uint8_t empty[5] = { 0 };
@@ -128,7 +138,12 @@ uint32_t TMC2130Stepper::read(uint8_t addressByte) {
     out = (response[1] << 24) | (response[2] << 16) | (response[3] << 8) | response[4];
 
     endTransaction();
-    if (cs) cs->set(true); // Pull CS high
+
+    if (cs) 
+    {
+        cs->set(true); // Pull CS high
+        TMC_SW_SPI->delay();
+    }
 
     return out;
 }
