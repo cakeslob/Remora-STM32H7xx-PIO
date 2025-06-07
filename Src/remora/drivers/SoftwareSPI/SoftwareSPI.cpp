@@ -14,10 +14,11 @@ SoftwareSPI::SoftwareSPI(const std::string& mosiPin, const std::string& misoPin,
       miso(misoPin, INPUT),
       clk(clkPin, OUTPUT),
       cs(nullptr),
-      delayTicks(2),
+      delayTicks(1000),
       bitOrder(bitOrder),
-      byteOrder(byteOrder) {
-	setSPIMode(mode);
+      byteOrder(byteOrder)
+{
+    setSPIMode(mode);
 }
 
 // Constructor WITH chip select
@@ -91,9 +92,11 @@ void SoftwareSPI::transfer(uint8_t* data, size_t length) {
 
             if (!cpha) { // Read on first clock edge if CPHA=0
                 received |= (miso.get() ? 1 : 0) << bitPos;
+                delay();
             }
         }
         clk.set(cpol);
+        delay();
 
         data[index] = received;
     }

@@ -24,9 +24,11 @@ private:
 
     Pin* analogInPin;
 
+    static uint32_t getADCChannelConstant(int channel);
+    static void enableADCClock(ADC_TypeDef* adc);
+
 public:
     AnalogIn(const std::string& portAndPin);
-
     uint16_t read();
 
 };

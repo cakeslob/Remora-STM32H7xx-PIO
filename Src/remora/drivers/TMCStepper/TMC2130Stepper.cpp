@@ -10,18 +10,17 @@ TMC2130Stepper::TMC2130Stepper(const std::string& pinCS, float RS, const std::st
       cs(nullptr),
       link_index(link) {
 
-	cs = new Pin(pinCS, OUTPUT);
+  cs = new Pin(pinCS, OUTPUT);
 
-    TMC_SW_SPI = new SoftwareSPI(pinMOSI, pinMISO, pinSCK, pinCS, SPI_MODE_3, MSB_FIRST, MSB_FIRST_BYTE);
+  TMC_SW_SPI = new SoftwareSPI(pinMOSI, pinMISO, pinSCK, pinCS, SPI_MODE_3, MSB_FIRST, MSB_FIRST_BYTE);
 
-    defaults();
+  defaults();
 
-    switchCSpin(HIGH);
-    TMC_SW_SPI->begin();
+  switchCSpin(HIGH);
+  TMC_SW_SPI->begin();
 
-    if (link > chain_length)
-      chain_length = link;
-  }
+  if (link > chain_length) chain_length = link;
+}
 
 TMC2130Stepper::TMC2130Stepper(const std::string& pinCS, const std::string& pinMOSI, const std::string& pinMISO, const std::string& pinSCK, int8_t link)
     : TMCStepper(default_RS),
