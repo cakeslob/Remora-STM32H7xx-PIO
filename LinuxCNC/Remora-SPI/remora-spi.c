@@ -1,6 +1,6 @@
 /********************************************************************
 * Description:  remora-spi.c
-*               This file, 'remora-rpispi.c', is a HAL component that
+*               This file, 'remora-spi.c', is a HAL component that
 *               provides and SPI connection to a external STM32 running Remora PRU firmware.
 *  				
 *		Initially developed for RaspberryPi -> Arduino Due.
@@ -16,7 +16,8 @@
 *
 * Copyright (c) 2024	All rights reserved.
 *
-* Last change: updated for RPi5 with RP1 southbridge
+* Last change:	- error handler diagnostics
+*				- updated for RPi5 with RP1 southbridge
 ********************************************************************/
 
 
