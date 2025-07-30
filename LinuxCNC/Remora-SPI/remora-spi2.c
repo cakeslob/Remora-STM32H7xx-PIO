@@ -53,7 +53,7 @@
 #include "remora.h"
 #include "remoraStatus.h"
 
-#define MODNAME "remora-spi"
+#define MODNAME "remora-spi2"
 #define PREFIX "remora"
 
 MODULE_AUTHOR("Scott Alford AKA scotta");

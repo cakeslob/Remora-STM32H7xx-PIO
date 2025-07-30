@@ -51,6 +51,8 @@ MEMORY
   ITCMRAM (xrw)     : ORIGIN = 0x00000000, LENGTH = 64K
 }
 
+_FLASH_VectorTable = ORIGIN(FLASH);
+
 /* Define output sections */
 SECTIONS
 {
